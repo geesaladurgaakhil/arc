@@ -1,10 +1,21 @@
-name: Actions Runner Controller Demo
+name: Actions Runner Controller With Redis
 on:
   workflow_dispatch:
 
 jobs:
-  Explore-GitHub-Actions:
-    # You need to use the INSTALLATION_NAME from the previous step
+  arc-runner-job:
     runs-on: arc_runner_set_arc
+    container: busybox
     steps:
-    - run: echo "🎉 This job uses runner scale set runners!"
+      - name: Trials
+        run: |
+          echo "Hello World" >> $GITHUB_STEP_SUMMARY
+          sleep 360
+        env:
+          REDIS_HOST: redis
+          REDIS_PORT: 6379
+    services:
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
